@@ -8,6 +8,7 @@ use std::{process, time};
 
 use argparse::ArgParseError;
 
+use crate::log::format_duration;
 use crate::{
     argparse::{Argument, ArgumentParser},
     log::log_with_header,
@@ -84,9 +85,9 @@ fn main() {
 
                 log_with_header(
                     format!(
-                        "PRE COMMAND {} END in {:.2?} ({})",
+                        "PRE COMMAND {} END in {} ({})",
                         i,
-                        before_pre.elapsed(),
+                        format_duration(&before_pre.elapsed()),
                         status
                     )
                     .as_str(),
@@ -110,8 +111,8 @@ fn main() {
     };
     log_with_header(
         format!(
-            "MAIN COMMAND END in {:.2?} ({})",
-            before_cmd.elapsed(),
+            "MAIN COMMAND END in {} ({})",
+            format_duration(&before_cmd.elapsed()),
             cmd_status,
         )
         .as_str(),
@@ -125,6 +126,7 @@ fn main() {
                 let mut post_cmd = create_command_from_str(post_cmd);
 
                 log_with_header(format!("POST COMMAND {} BEGIN", i).as_str());
+                let before_post = time::Instant::now();
 
                 let status = match post_cmd.status() {
                     Ok(s) => s,
@@ -134,7 +136,15 @@ fn main() {
                     }
                 };
 
-                log_with_header(format!("POST COMMAND {} END ({})", i, status).as_str());
+                log_with_header(
+                    format!(
+                        "POST COMMAND {} END in {} ({})",
+                        i,
+                        format_duration(&before_post.elapsed()),
+                        status
+                    )
+                    .as_str(),
+                );
             }
         }
         None => (),
