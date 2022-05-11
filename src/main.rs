@@ -139,4 +139,8 @@ fn main() {
         }
         None => (),
     }
+
+    if !cmd_status.success() {
+        process::exit(cmd_status.code().unwrap_or(1));
+    }
 }
