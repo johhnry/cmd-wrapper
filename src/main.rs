@@ -23,6 +23,13 @@ fn create_command_from_str(cmd_str: &str) -> Command {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
+    // Registering Ctrl+C handler
+    // See: https://rust-cli.github.io/book/in-depth/signals.html
+    ctrlc::set_handler(move || {
+        println!("[INFO] Received termination signal, exiting...");
+    })
+    .expect("Error setting Ctrl+C handler");
+
     let mut parser = ArgumentParser::new();
 
     parser.add_argument(Argument {
