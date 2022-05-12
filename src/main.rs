@@ -81,7 +81,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let status = match pre_cmd.status() {
                     Ok(s) => s,
                     Err(err) => {
-                        println!("[ERROR] Error when launching pre-command: {:?}", err);
+                        println!(
+                            "[ERROR] Error when launching pre-command: {} ({:?})",
+                            err.to_string(),
+                            pre_cmd
+                        );
                         process::exit(1);
                     }
                 };
@@ -139,7 +143,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let status = match post_cmd.status() {
                     Ok(s) => s,
                     Err(err) => {
-                        println!("[ERROR] Error when launching post-command: {:?}", err);
+                        println!(
+                            "[ERROR] Error when launching post-command: {:} ({:?})",
+                            err.to_string(),
+                            post_cmd
+                        );
                         process::exit(1);
                     }
                 };
