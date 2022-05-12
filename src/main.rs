@@ -2,6 +2,7 @@ mod argparse;
 mod log;
 mod substring;
 
+use std::error::Error;
 use std::ops::Index;
 use std::process::Command;
 use std::{process, time};
@@ -21,7 +22,7 @@ fn create_command_from_str(cmd_str: &str) -> Command {
     pre_cmd
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut parser = ArgumentParser::new();
 
     parser.add_argument(Argument {
@@ -61,7 +62,7 @@ fn main() {
     let cmd = args.get("cmd".into()).unwrap();
     let post = args.get("post".into());
 
-    // Execute pre command if any
+    // Execute pre commands if any
     match pre {
         Some(pre_cmds) => {
             for (i, pre_cmd) in pre_cmds.iter().enumerate() {
@@ -119,7 +120,7 @@ fn main() {
     );
     println!("");
 
-    // Execute the post command even if the main command failed
+    // Execute post commands even if the main command failed
     match post {
         Some(post_cmds) => {
             for (i, post_cmd) in post_cmds.iter().enumerate() {
@@ -153,4 +154,6 @@ fn main() {
     if !cmd_status.success() {
         process::exit(cmd_status.code().unwrap_or(1));
     }
+
+    Ok(())
 }
