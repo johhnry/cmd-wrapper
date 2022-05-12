@@ -14,9 +14,10 @@ pub fn format_duration(duration: &time::Duration) -> String {
 
     // Format to 0h 0m 0s when duration greater than 1s
     if secs >= 1 {
+        let seconds = secs % 60;
         let minutes = (secs / 60) % 60;
         let hours = (secs / 60) / 60;
-        return format!("{}h {}m {}s", hours, minutes, secs);
+        return format!("{}h {}m {}s", hours, minutes, seconds);
     }
 
     return format!("{:.2?}", duration);
