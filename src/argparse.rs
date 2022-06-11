@@ -150,6 +150,23 @@ mod tests {
     }
 
     #[test]
+    fn with_sub_string() {
+        let mut parser = ArgumentParser::new();
+
+        parser.add_argument(Argument {
+            name: "test".into(),
+            description: "Contains substring".into(),
+            required: true,
+            multiple: false,
+        });
+
+        assert!(parser.parse_args(vec!["--test=\"hello\"".into()]).is_ok());
+        assert!(parser
+            .parse_args(vec!["--test=\"python3 -c \"print(5)\"\"".into()])
+            .is_ok());
+    }
+
+    #[test]
     fn with_multiple_arguments() {
         let mut parser = ArgumentParser::new();
 
