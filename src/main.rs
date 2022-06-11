@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 };
 
                 if !status.success() {
-                    println!("[ERROR] Pre command failed with {}", status);
+                    println!("[ERROR] Pre command {} failed with {}", i, status);
                     process::exit(status.code().unwrap_or(1));
                 }
 
